@@ -7,7 +7,8 @@ import expenseRoutes from "./routes/expenseRoutes.js";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+app.use(cors({ origin: allowedOrigin }));
 app.use(express.json());
 
 app.get("/api/health", (req, res) => res.json({ status: "ok" }));
