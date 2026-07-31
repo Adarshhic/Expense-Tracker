@@ -1,4 +1,5 @@
 import { Router } from "express";
+import mongoose from "mongoose";
 import Expense, { EXPENSE_CATEGORIES } from "../models/Expense.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -68,7 +69,7 @@ router.delete("/:id", async (req, res) => {
 // GET /api/expenses/summary — totals by category, for the dashboard
 router.get("/summary", async (req, res) => {
   const summary = await Expense.aggregate([
-    { $match: { userId: req.userId } },
+    { $match: { userId: new mongoose.Types.ObjectId(req.userId) } },
     { $group: { _id: "$category", total: { $sum: "$amount" } } },
     { $sort: { total: -1 } },
   ]);
